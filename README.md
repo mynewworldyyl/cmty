@@ -1,4 +1,4 @@
 cmty
 ====
 
-a cmty test project
+基于Node.js实现的bbs网站
