@@ -1,0 +1,31 @@
+﻿<script  type="text/javascript" >
+
+	  $(document).ready(function(){
+            if(EJS) {
+                EJS.config( {cache: true, ext: '.html' } );
+            }
+				  var sh = window.screen.availHeight;
+         var sw = window.screen.availWidth;
+         $("#dialogId").css({'top':sh/2-215,'left':sw/2-200});
+         
+	  });
+	</script>
+ <div id="<%=dialogId %>" style="background:pink;position:absolute;
+        width:400px;height:60px;z-index:300;border-radius:5px 5px 0 0;color:#fff;padding:20px 0 0 20px;outline:none">
+
+		  
+
+         <div  id="dialogContent" style="position:relative;
+                text-align: left;padding-left-30px">
+                <p><%=content %></p>
+         </div>
+				 <div  id="dialogBtn"   style="position:absolute;bottom:15px;right:20px;text-align:center;">
+				
+				             <% for(var i=0; i< buttons.length; i++) { %>
+				                <input id="<%=buttons[i].methodKey%>" type="button" value="<%=buttons[i].title %>">
+				             <% } %>
+				
+				 </div>
+         
+
+ </div>

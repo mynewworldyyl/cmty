@@ -1,0 +1,32 @@
+﻿<script type="text/javascript">
+    dc.utils.load('/javascripts/act.js');
+</script>
+<div id="actInfo" class="actInfo" style="width:100%;height:100%;position:relative;">
+    <div class="boxStyle" style="width:100%;height:101px;border-bottom:solid 1px #fff;background-color:lightblue ">
+        <div style="width:100px;height:80px;text-align:center;float:left;line-height:80px;padding-top:20px">
+            <img id="actHeadIcon" src="<%=act.iconUrl%>" width="60px" height="60px" style=""/>
+        </div>
+        <div style="height:100px;float:left;margin-top: 20px;">
+            <input id="actHeadIconSelector" type="file" name="iconUrl1" style="display:none", onchange="dc.act.iconFileChange(this)">
+            <input type="button" name="iconUrl" value="换头像"onclick="$('#actHeadIconSelector').click()"/>
+
+            <input class="opacity" type="text" name="userName" value="<%=act.userName%>" readonly="true"/>
+            <input type="text" name="remark" value="<%=act.remark%>"/>
+            <div id="controlBar">
+                <input type="button" name="save" value="保存" id="<%=act.id%>" onclick="dc.act.saveActInfo(this)"/>
+            </div>
+        </div>
+    </div>
+   <section  class="boxStyle" style="width:100%;height:350px;border-bottom:solid 1px #fff;float: right;margin-top: 20px;">
+       <input type="hidden" name="actId" value="<%=act.id%>"/>
+       <input type="hidden" name="itemId" value="<%=itemId%>"/>
+       <span>昵称</span><input type="text" name="nickName" value="<%=act.nickName%>"/><br>
+       <span>邮箱</span><input type="text" name="email" value="<%=act.email%>"/><br>
+       <span>办公电话</span><input type="text" name="officePhone" value="<%=act.officePhone%>"/><br>
+       <span>家庭电话</span><input type="text" name="homePhone" value="<%=act.homePhone%>"/><br>
+       <span>家庭地址</span><input type="text" name="addrLine1" value="<%=act.addrLine1%>"/><br>
+       <span>描述</span><input type="text" name="description" value="<%=act.description%>"/><br>
+   </section>
+</div>
+
+

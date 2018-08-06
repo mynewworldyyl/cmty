@@ -1,0 +1,27 @@
+
+<div style="width:60px;height:45px; text-align:center;line-height:20px;float: left;border-bottom:3px solid #6e94df;font-size: 16px;text-decoration: none;font-family: 'microsoft YaHei';color: #696969;margin-left: 30px;vertical-align: middle;padding-top: 15px;letter-spacing: 5px;">
+    <span>发贴</span>
+</div>
+<div style="width:100%;height:60px;margin-left: 110px;padding-top: 15px;">
+    <select name="topicType" id="topicType">
+        <option value="-1">请选择贴类别</option>
+        <% for(var i = 0; i < topicTypeList.length; i++ ) {%>
+        <option value="<%=topicTypeList[i].id %>"><%=topicTypeList[i].title %></option>
+        <% } %>
+    </select>
+    <span style="margin-left: 20px;color: #768686;">标题:</span>
+    <input type="text" name="topicTitle" id="topicTitle" style="border: solid 1px #6e94df;height: 30px;outline: none;width: 250px;color: #878686;margin-left: 5px;padding-left: 10px;"/>
+    <span style="color: #878686;margin-left: 10px;">不要超过100字符</span>
+</div>
+
+<div id="topicEditor" style="height:200px;width:100%">
+
+</div>
+
+<div style="width:100%;height:20px;cursor:pointer">
+    <div id="confirmSubmit" style="width:100px;height:35px;cursor:pointer;
+                      text-align:center; line-height:35px; background:#00b7ee; color:#fff;border-radius:3px;margin:10px 0 0 20px;letter-spacing:5px">
+        <span>提&nbsp;交</span>
+    </div>
+
+</div>

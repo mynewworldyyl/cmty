@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../secs/comm_header.html'); %>
+	
+	<style>
+       p{ height: auto;}
+
+	   .topicReturnCtnRightFoot{
+	       width:100%; height:22px; position:relative; left:0px; font-size:small;
+	   }
+
+       .topicReturnCtnRightFoot:hover {border-top:dashed 1px lightgray;}
+
+	   .topicCtnLeft{
+           width: 200px;   position: relative;  display: inline-block;
+	   }
+       .topicCtnRight {
+           width: 790px;  position: relative;  display: inline-block;
+       }
+	   .topicCtnRightReturnHeader{
+           position: relative;  border-bottom: solid 1px #E8E8E8;  width: 100%;  height: 30px;  line-height: 30px;
+           font-size: small;padding: 0px 0 5px 10px;
+	   }
+	   .topicContent {
+           border-bottom: solid 1px #F2F2F2;  width: 100%;  position: relative;
+	   }
+	   .topicCtnRightReturn{
+           width: 790px;  position: relative;  display: inline-block;
+	   }
+	   .topicCtnRightCenter {
+           width:100%;line-height:30px; min-height:100px;padding:10px 20px;margin-top: 10px;
+	   }
+	   .topicCtnHeaderIcon{
+	     text-align:center; margin-top:10px;
+	   }
+	   
+	   .topicCtnButton{
+	     color:#333; text-decoration:none;cursor:pointer;
+	   }
+	   
+	   .topicCtnButton:hover {color:#CC3300;text-decoration:underline;}
+	   
+	 	</style>
+	<script  type="text/javascript">
+		
+	   var init = function() {
+
+		 console.log("load page");
+		 var ue = UE.getEditor('container',
+		        {
+		        toolbars: [
+					['fullscreen', 'source', 'undo', 'redo'],
+					['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+				],
+			    autoHeightEnabled: true,
+			    autoFloatEnabled: true}
+	           );
+
+           $('#confirmSubmit').click(function(){
+               if(!dc.isLogin()) {
+                   alert("未登陆，请先登陆!")
+                   return;
+               }
+               var content = ue.getContent();
+               if(content == null || content.trim() == '') {
+                   alert("内容不能为空");
+                   return;
+               }
+               var topicId = $('#topicId').val();
+               $.post(dc.cxt + '/bbs/doCreateTopicNote',{topicId:topicId, content:content},
+                       function(data,status){
+                           location.reload();
+                       }
+               );
+           });
+
+           $('.topicCtnButton').click(function(alink){
+               if(this.id == null || this.id == undefined) {
+                   return;
+               }
+               if(!dc.isLogin()) {
+                   alert("未登陆，请先登陆!")
+                   return;
+               }
+               $.get(this.id, function(data,status){
+                           if(data == 'success' && status == 'success') {
+                               location.reload();
+                           }else {
+                               console.log(data);
+                           }
+                       }
+               );
+           });
+	   }
+	   
+	   $(document).ready(function(){
+           dc.init();
+		 init();
+		 $(".topicListItem").mouseover(function(){
+		    $(".topicListItem").css({"background-color":"#CCCCCC"});
+		 });
+
+         $(".topicListItem").mouseout(function(){
+		    $(".topicListItem").css({"background-color":"#CCCCFF"});
+		 });
+
+
+         $(".topicContent").each(function(tc,elt){
+               var chs =  $(this).children();
+               var h2 = $(chs[1]).css('height');
+               $(chs[0]).css('height',$(this).css('height'));
+               //$(this).css({height:h2});
+         })
+
+	   });
+	   
+	</script>
+  </head>
+  <body>
+  <%- include('../secs/navigatorBar.html'); %>
+    <div id="bbsBody" class="bbsBody" style="">
+         
+		 <%- include('../secs/header.html'); %>
+	    <input id="topicId" type="hidden" value="<%=topic.id%>"/>
+		<div id="topicCtnItem" class="boxStyle" style="width:100%;height:auto">
+			 <div id="topicCtnHeaderInfo" style="border-bottom:none; height:50px; width:100%;">
+                  <div style="float:left; width:20%; height:100%; text-align:center; line-height:30px;padding-top: 20px;">
+				      <span>查看:<font color="#00b7ee"><%=topic.readNum %></font></span>
+                      <span style="margin-left:16px">回复:<font color="#00b7ee"><%=topic.noteNum %></font></span>
+				  </div>
+                  <div id="topicTitle" style="border-bottom:none;font-size:23px; float:right; width:79%; height:100%; text-align:left; line-height:30px;padding: 10px 0 5px 10px;">
+				     <span>[<%=topic.topicType.title%>]</span><span><%=topic.title%></span>
+				  </div>				  
+			 </div>
+			 
+			 <div class="topicContent">
+			     
+			     <div id="topicCtnLeft" class="topicCtnLeft">
+				     <div style="text-align:center; margin-top:10px">
+					     <img width="60px" height="60px" class="headIcom" src="<%=topic.createdBy.iconUrl%>"/>
+                         <span style="display:block;margin-top:20px"><%=topic.createdBy.nickName %></span>
+					 </div>	 
+				 </div>
+				 <div class="topicCtnRight">
+				   <div class="topicCtnRightReturnHeader">
+				       <span>发表于</span> <span>5</span> <span>天前</span>
+                       <% if(act) {%>
+                           <div style="display:inline-block; height: 100%;position:relative;left:550px">
+                               <% if(bbsAdmin){ %>
+                                    <% if(topic.topSeq > 0) { %>
+                                        <span  class="topicCtnButton" id="<%=cxt%>/bbs/positionTopTopic?topicId=<%=topic.id %>&topSeq=-1">顶置</span>
+                                    <% } else { %>
+                                        <span  class="topicCtnButton" id="<%=cxt%>/bbs/positionTopTopic?topicId=<%=topic.id %>&topSeq=1">不顶置</span>
+                                    <% } %>
+
+                                   <% if( !topic.essence ) { %>
+                                        <span  class="topicCtnButton" id="<%=cxt%>/bbs/essenceTopic?topicId=<%=topic.id %>&essence=true">精华</span>
+                                   <% } else { %>
+                                        <span  class="topicCtnButton" id="<%=cxt%>/bbs/essenceTopic?topicId=<%=topic.id %>&essence=false">取消精华</span>
+                                   <% } %>
+
+                               <% } %>
+
+                               <% if(show.show){ %>
+                                    <span  class="topicCtnButton"  id="<%=cxt%>/bbs/lockedTopic?topicId=<%=topic.id %>&locked=<%=!topic.locked%>"><%=show.lockedMsg%></span>
+                                    <span  class="topicCtnButton"  id="<%=cxt%>/bbs/recallTopic?topicId=<%=topic.id %>&recall=<%=!topic.recall%>"><%=show.recallMsg%></span>
+                                    <% if(topic.resolved) { %>
+                                         <span>已解决</span>
+                                    <% } else { %>
+                                         <span  class="topicCtnButton" id="<%=cxt%>/bbs/resolveTopic?topicId=<%=topic.id %>">解决</span>
+                                    <% } %>
+
+                               <% } %>
+                           </div>
+                       <% } %>
+
+				   </div>
+				   <div class="topicCtnRightCenter" style="">
+                       <%-topic.content %>
+				   </div>
+				   <div  class="topicReturnCtnRightFoot" style="">
+
+                       <% if(topic.locked) { %>
+                           <img class="lockedIcon" src="/images/locked.png"></img>
+                       <% } else { %>
+                         <span class="topicCtnButton" id="<%=cxt%>/bbs/topicFeedback?topicId=<%=topic.id %>">回复</span>
+                       <% } %>
+
+                       <span class="topicCtnButton" id="<%=cxt%>/bbs/topicAccusation?noteId=<%=topic.id %>">举报</span>
+				   </div>
+				 </div>
+			 </div>
+			 
+			 <% for(var i = 0; i < notes.length; i++) { %>
+                <div class="topicContent" >
+                    <div  class="topicCtnLeft" style="">
+                        <div class="topicCtnHeaderIcon">
+                            <img width="60px" height="60px" class="headIcom" src="<%=notes[i].createdBy.iconUrl%>"></img>
+                            <span style="display:block;margin-top:20px"><%=notes[i].createdBy.nickName %></span>
+                        </div>
+                    </div>
+
+                    <div  class="topicCtnRightReturn" style="">
+                        <div class="topicCtnRightReturnHeader" style="position:relative">
+                            <span>发表于</span> <span>10</span> <span>天前</span>
+                            <span style="position:relative; left: 610px;font-size: small">
+                                <% if(notes[i].seq == 1) { %>
+                                    <%='沙发' %>
+                                <% } else if(notes[i].seq == 2) { %>
+                                    <%='板凳' %>
+                                <% } else if(notes[i].seq == 3) { %>
+                                     <%='地板' %>
+                                <% } else { %>
+                                    <%=notes[i].seq +'#'%>
+                                <% } %>
+                            </span>
+                        </div>
+                        <div class="topicCtnRightCenter" style="">
+                            <%-notes[i].content %>
+                        </div>
+                        <div id="topicCtnRightFoot"  class="topicReturnCtnRightFoot">
+                            <% if(topic.locked) { %>
+                                <img class="lockedIcon" src="/images/locked.png"></img>
+                            <% } else { %>
+                                 <span class="topicCtnButton" id="<%=cxt%>/bbs/topicFeedback?noteId=<%=notes.id %>">回复</span>
+                            <% } %>
+                            <%
+                                if( notes[i].supportNum == null ) {
+                                    notes[i].supportNum=0;
+                                }
+                                if( notes[i].opposeNum == null ) {
+                                    notes[i].opposeNum=0;
+                                }
+                            %>
+                            <span  class="topicCtnButton"  id="<%=cxt%>/bbs/noteSupport?noteId=<%=notes[i].id %>">支持(<%=notes[i].supportNum %>)</span>
+                            <span  class="topicCtnButton"  id="<%=cxt%>/bbs/noteOppose?noteId=<%=notes[i].id %>">反对(<%=notes[i].opposeNum %>)</span>
+                            <span  class="topicCtnButton" id="<%=cxt%>/bbs/noteAccusation?noteId=<%=notes[i].id %>">举报</span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+		</div>
+	   
+	    <div id="topicCtnFoot" class="topicCtnFoot" style="width:100%;height:50px; border-top:solid 1px #CCCCCC; margin-top:10px">
+			<div style="float:right;height:100%;line-height:50px; text-align:right;color: #878686;">
+			     <span>上一页</span><span>&nbsp;1&nbsp;</span><span>&nbsp;2&nbsp;</span><span>&nbsp;3&nbsp;</span><span>&nbsp;4&nbsp;</span><span>下一页</span>
+			</div>
+		</div>
+
+        <% if(!topic.locked) { %>
+            <div  class="boxStyle" style="width:100%;min-height:230px; border:none blue;">
+                <div style="float:left;width:10%;height:100%;text-align:center;line-height:200px">
+                    <% if( locals.act ) { %>
+                        <img src="<%act.iconUrl%>"></img>
+                    <% } %>
+                </div>
+                <div id="container" style="float:right;height:100%;width:100%">
+                </div>
+                <div style="clear:both">
+                </div>
+            </div>
+
+            <div style="width:100%;margin-top: -60px;">
+                <div id="confirmSubmit" style="width:100px;height:35px;cursor:pointer;
+                                  text-align:center; line-height:35px; background:#00b7ee; color:#fff;border-radius:3px;margin:10px 0 0 20px;letter-spacing:5px">
+                    <span>提&nbsp;交</span>
+                </div>
+            </div>
+        <% } %>
+
+	</div>
+	
+    <%- include('../secs/copyright.html');  %>
+
+		
+  </body>
+  
+
+</html>

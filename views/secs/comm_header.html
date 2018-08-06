@@ -1,0 +1,83 @@
+﻿<meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>豆壳圈</title>
+    <link rel="stylesheet" type="text/less" href="/stylesheets/style1.less" />
+    <link rel="stylesheet" href="/css/dowcool.css?v1.01">
+    <link rel="stylesheet" href="/bs/css/bootstrap.css">
+    <link rel="stylesheet" href="/bs/css/css.css">
+    <script type="text/javascript" src="/bs/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/bs/js/npm.js"></script>
+	<script type="text/javascript" src="/javascripts/dc.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery_min.2.1.3.js"></script>
+    <script type="text/javascript" src="/javascripts/less.min.js"></script>
+    <script type="text/javascript" src="/javascripts/ejs_production.js"></script>
+    <% if(locals.scripts) { %>
+        <% for(var i = 0; i< scripts.length; i++ ) { %>
+            <script type="text/javascript" src="<%=scripts[i]%>"></script>
+        <% } %>
+    <% } %>
+	<!-- 配置文件 -->
+  <!--  <script type="text/javascript" src="/ueditor/ueditor.uiditorCfg.js"></script>-->
+    <!-- 编辑器源码文件 -->
+    <!--<script type="text/javascript" src="/ueditor/ueditor.all.min.js"></script>-->
+	
+	<script  type="text/javascript" >
+
+	  $(document).ready(function(){
+            if(EJS) {
+                EJS.config( {cache: true, ext: '.html' } );
+            }
+					/*
+            var sh = window.screen.availHeight;
+	        $("body").css({'min-height':sh, '-height':sh});
+            $("#bbsBody").css({'min-height':sh, '-height':sh});
+          if(parseInt($("#copyRight").css('top')) <sh  ) {
+              //var htop = $("#bbsBody").css('top');
+              var bh = $("#bbsBody").css('height');
+              var of = parseInt(bh) - parseInt($('#bbsHeader').css('height'))-parseInt($('#copyRight').css('height'))-68;
+              $("#copyRight").css({'top': of+'px'});
+          }*/
+    		
+    	
+    		//$(".loginpanel").hide();	
+         var sh = window.screen.availHeight;
+         var sw = window.screen.availWidth;
+         $("#reg11").css({'height':sh}); 
+         $(".regpanel").css({'top':sh/2-215,'left':sw/2-200});
+         $("#login11").css({'height':sh}); 
+         $(".loginpanel").css({'top':sh/2-215,'left':sw/2-200});
+         
+         $("#closeReg").click(function () {
+         $("#reg11").hide();
+         $(".regpanel").hide();
+         $("#dialogId").hide();
+         });
+         
+         $("#closeLogin").click(function () {
+         $("#login11").hide();
+         $(".loginpanel").hide();
+         $("#dialogId").hide();
+         });
+         
+         
+         $("#confirmSubmit,#bookMarkThis,#submitRegister,#doLogin").mouseover(function(){
+             $(this).css({"background-color":"#12c4f9"});
+         });
+         $("#confirmSubmit,#bookMarkThis,#submitRegister,#doLogin").mouseout(function(){
+             $(this).css({"background-color":"#00b7ee"});
+         });
+         
+       
+	  });
+	  
+	  function openReg() {
+		  $("#reg11").show();
+	  	$(".regpanel").show();	
+	 }  
+	 function openLogin() {
+	 	  $("#login11").show();
+	  	$(".loginpanel").show();	
+	 }
+	</script>
+	

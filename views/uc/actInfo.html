@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../secs/comm_header.html'); %>
+    <style>
+        .menuItem{cursor:pointer;height:35px;line-height:25px;width:auto;text-align: center; margin-top: 10px;
+		}
+        .menuItem:hover{background-color:#00b1ee; color: #fff;
+		}
+        .menu{list-style:none;padding:0px;margin-bottom:10px ;text-align: center;font-size: 18px;color: #878686;vertical-align: middle;
+		}
+    </style>
+    <script  type="text/javascript">
+        $(document).ready(function(){
+            dc.init();
+            $(".menuItem").click(function(item){
+                var url = dc.cxt+'/uc/menuItem?id='+ $(this).attr('id');
+                $(".detailBar").load(url, function(responseTxt,statusTxt,xhr){
+                    if(statusTxt=="success"){
+                    } else {
+                        alert("Error: "+xhr.status+": "+xhr.statusText);
+                    }
+                });
+            })
+        });
+    </script>
+</head>
+<body>
+<%- include('../secs/navigatorBar.html'); %>
+<div id="bbsBody" class="bbsBody" style="">
+
+    <%- include('../secs/header.html'); %>
+    <div  style="height:500px;position:relative;width:100%">
+        <div class="masterBar boxStyle" style=";float:left;width:19%;height:100%;padding-top: 20px;">
+            <% for(var i=0; i< menus.length; i++ ) { %>
+                <% if(menus[i].items) {
+                     var items = menus[i].items;
+                %>
+                    <ul class="menu" id="<%=menus[i].id%>"><%=menus[i].name%>
+                        <% for(var j=0; j< items.length; j++ ) { %>
+                            <li class="menuItem" id="<%=items[j].id%>"><%=items[j].name%></li>
+                        <% } %>
+                    </ul>
+                <% } %>
+
+            <% } %>
+        </div>
+        <div class="detailBar boxStyle" style="float:right;;width:80%;height:100%;">
+
+        </div>
+    </div>
+
+</div>
+
+<%- include('../secs/copyright.html');  %>
+
+</body>
+</html>

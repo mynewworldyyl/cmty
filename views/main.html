@@ -1,0 +1,692 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+  
+     <%- include('secs/comm_header.html'); %>
+   
+	<style>
+
+	   .topicListItem{
+	      height:80px; width:100%;border-top:1px solid #dfdfdf; 
+	   }
+	   
+	   .topicListItemImage{
+	     float:left; display:inline-block; position:static; left:3px; top:3px; width:10%; height:100%;text-align:center; line-height:70px; vertical-align:middle;
+	   }
+	   
+	   .headIcom {
+	     width:50px; height:50px; margin-top:8px; border-radius: 5px;
+	   }
+
+
+	   
+	   .listItemTop {
+	     height:60%; width:100%; vertical-align:middle; line-height:42px;padding-top: 5px;
+	   }
+	   
+	   .itemTopicType {
+           color:#00b7ee; cursor:pointer; background-color:none; border-radius: 3px; padding:3px 5px 3px 5px;font-size:14px;border: 1px solid #00b7ee;
+	   }
+	   
+	   .itemTopicTitle {
+	      cursor:pointer; text-decoration: none; color: #696969;font-size:16px;padding-left: 10px;font-family: 'microsoft Yahei';
+	   }
+	   .itemTopicTitle a:hover{
+	      text-decoration: none; color: #696969;
+	   }
+	   
+	   .listTopicUpdateTime {
+	      color:#aaa;
+	   }
+	   
+	   .listItemBottom {
+	      border:none; height:35%; width:100%;line-height:35%;
+	   }
+	   
+	   .getReturnNumReadBox {
+	     display:inline-block; float:right;width:80px;height:100%; text-align:center;line-height:25px;color: #aaa;font-size: 12px;
+	   }
+	   
+	   .getReturnNumFeedback{
+	     display:inline-block; float:right;width:80px;height:100%; text-align:center;line-height:42px;color: #aaa;
+	   }
+	   
+	   #topicListItemContent{
+	      float:right; display:inline-block; position:static; left:83px; top:3px; width:89%; height:100%;
+	   }
+	   
+	   .bbsMenuCond{
+		 list-style:none;display:inline-block; width:auto; height:30px; margin-top:15px; text-align:center; line-height:40px; border-radius: 5px;margin-right: 10px;
+		 
+		}
+		.bbsMenuCond a{ 
+		   cursor:pointer;text-decoration: none;color: #878686;
+		}
+		.bbsMenuCond:hover{ 
+		   cursor:pointer;text-decoration: underline;
+		}
+		
+		.bbsMenu {
+		   list-style:none; display:inline-block; text-align:center; margin-left: 30px;padding: 0px 5px 5px 5px;
+		   margin-right: 10px;
+		   font-size: 16px;text-decoration: none;font-family: 'microsoft YaHei';color: #696969;
+		}
+        .bbsMenuSelectStatus {
+            border-bottom:3px solid #6e94df;margin-top: 25px;
+        }
+
+		.bbsMenu:hover{
+		    cursor:pointer;border-bottom:3px solid #6e94df;
+		}
+	   
+	   .itemBottomStyle {
+	      float:left; font-size:12px; line-height:30px; font-weight:normal;color: #c5c3c3;  
+	   }
+	   
+	   .quickNavItem{
+	     list-style: square outside url('/images/20150311123437.png');')
+	   }
+	   
+	   .scrollButtona{
+	     display:inline-block; border-radius:4px; width:100%; height:100%; cursor:pointer; text-decoration:none; background:#00b7ee;
+	   }
+	   
+	   .scrollButton{
+	     display:inline-block; list-style-type:disc; width:7px; height:7px;margin: 0 5px 0 5px;
+	   }
+	   
+	   .createTopicButton {
+	     height:50px; width:100%; text-align:center; line-height:50px; background:#FF8C00; color:gray;
+	   }
+        .itemTopicStatu{ height:100%;text-align:center;color:#6e94df;border:solid 1px #6e94df;font-size:10px;padding:3px;padding-left: 5px;margin-left: 5px; }
+       .topicTopPosition{color:#FFFFFF;background-color:#ff9301; border-radius: 3px; padding:4px 10px 4px 10px;margin-left:2px; font-size:14px; }
+	 	</style>
+	<script  type="text/javascript">
+		
+		var imglen = 0;
+		var nowlan = 0;
+		var scrollPhotoTimer = null;
+		function changepic() {
+            showPhoto(nowlan);
+			nowlan = (++nowlan)%imglen;
+		}
+		
+		function showPhoto(lan) {
+
+			$("#scrollPhotoInner").find("div").hide(2000);
+			$("#scrollPhotoInner").find("div").eq(lan).show(2000, function(){
+			   
+			});
+			$(".scrollButton").find("a").css({'background':'#00b7ee'});
+			$(".scrollButton").find("a").eq(lan).css({'background':'#ff9301'});
+			nowlan = lan;
+		}
+
+        var query = '';
+
+        function changePage(elt) {
+            var pageNum = $(elt).attr('id');
+            doLoadJsonTopicList(query,pageNum)
+        }
+
+        function loadTopicListByQuickBtn(elt) {
+            var orderBy = $(elt).attr('id');
+            doLoadJsonTopicList(query,pageNum,orderBy)
+        }
+
+        function doLoadJsonTopicList(qry,pageNum,orderBy,searchStr) {
+            var offset = parseInt(pageNum * dc.topicPageSize);
+            var url = dc.cxt + '/bbs/loadTopicList?json=true&offset='+offset;
+
+            if(!!orderBy) {
+                if(orderBy ==='essence') {
+                    url = url +'&essence='+true;
+                }else {
+                    url = url +'&orderBy='+orderBy;
+                }
+            }
+
+            query = qry;
+            if(query) {
+                url = url + '&' +query;
+            }
+
+            $.get(url,function(data,statusTxt,xhr){
+                if(statusTxt != 'success') {
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+                    return;
+                }else if(!data.success){
+                    alert("Error: " + data.msg);
+                    return;
+                }
+                //静态内容/bbs/topicList.html
+
+                for(var i = 0; i < data.topics.length; i++) {
+                    // 2015-04-05T16:00:00.000Z
+                    var t =data.topics[i];
+                    t.createdDateStr = t.createdOn.substring(0,t.createdOn.indexOf('T'));
+                    t.updatedDateStr = t.updatedOn.substring(0,t.updatedOn.indexOf('T'));
+                }
+
+                var html = new EJS({url: "/bbs/topicList.html"}).render(data);
+                $("#topicList").html(html);
+
+                $(".topicListItem").mouseover(function(){
+                    $(this).css({"background-color":"#fafafa"});
+                });
+
+                $(".topicListItem").mouseout(function(){
+                    $(this).css({"background-color":"#FFFFFF"});
+                });
+                var leftHeight = parseInt($('#contentLeft').css('height'));
+                var rightHeight = parseInt($('#contentRight').css('height'));
+
+                if(leftHeight>rightHeight) {
+                    $('#contentRight').css('height',leftHeight+'px');
+                }else{
+                    $('#contentLeft').css('height',rightHeight+'px');
+                }
+
+                //静态内容/bbs/topicList.html
+                var html = new EJS({url: "/bbs/pagableBar.html"}).render({ count: data.totalNum, pageSize:dc.topicPageSize, currentPage:parseInt(pageNum) });
+                $("#pageContainer").html(html);
+
+            })
+        }
+
+        function doLoadTopicList(url) {
+            if(!url) {
+                url = dc.cxt + "/bbs/loadTopicList";
+            }
+            $("#topicList").load(url, function(responseTxt,statusTxt,xhr){
+                if(statusTxt=="success"){
+
+                    $(".topicListItem").mouseover(function(){
+                        $(this).css({"background-color":"#CCCCCC"});
+                    });
+
+                    $(".topicListItem").mouseout(function(){
+                        $(this).css({"background-color":"#FFFFFF"});
+                    });
+                    var leftHeight = parseInt($('#contentLeft').css('height'));
+                    var rightHeight = parseInt($('#contentRight').css('height'));
+
+                    if(leftHeight>rightHeight) {
+                        $('#contentRight').css('height',leftHeight+'px');
+                    }else{
+                        $('#contentLeft').css('height',rightHeight+'px');
+                    }
+                } else {
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+                }
+            });
+        }
+
+        //dc.utils.load('/ueditor/ueditor.uiditorCfg.js');
+       // dc.utils.load('/ueditor/ueditor.all.min.js');
+
+	   $(document).ready(function(){
+           dc.init();
+           dc.bbs.init();
+	     imglen = $("#scrollPhotoInner").find("div").length;
+         //$('#bbsHeaderAccountInfo').first().children()[0].remove();
+
+		 scrollPhotoTimer = window.setInterval("changepic()", 5 * 10000);
+
+         $('.bbsMenu').click(function(alink){
+             doLoadJsonTopicList(this.id,0);
+             $(this).siblings().each(function(e){
+                $(this).removeClass('bbsMenuSelectStatus');
+             });
+             $(this).addClass('bbsMenuSelectStatus');
+         });
+           doLoadJsonTopicList(null,0);
+
+		 $(".scrollButtona").mouseover(function(){
+		    if(scrollPhotoTimer) {
+				window.clearInterval(scrollPhotoTimer);
+			    scrollPhotoTimer = null;
+			}
+			var id =  $(this).attr("id");
+			$(this).attr("id",id);
+            showPhoto(parseInt(id));
+		 });
+		 
+		 $(".scrollButtona").mouseout(function(){
+		    scrollPhotoTimer = setInterval(changepic, 5 * 10000);
+		 });
+		 
+		 $("#scrollPhotoInner").mouseover(function(){
+		    if(scrollPhotoTimer) {
+				window.clearInterval(scrollPhotoTimer);
+			    scrollPhotoTimer = null;
+			}
+		 });
+		 
+		 $("#scrollPhotoInner").mouseout(function(){
+		    scrollPhotoTimer = setInterval(changepic(), 5 * 10000);
+		 });
+
+           $("#createTopicButton").click(function(){
+               if(!dc.isLogin()) {
+                   alert('你没有登陆');
+                   return;
+               }
+               dc.goTo(dc.cxt + '/bbs/createTopic.html')
+           })
+	   });
+	   
+	   //登陆
+	   
+	   
+	   	   var init = function() {
+	   		$('#doLogin').click(function(){
+	               var un = $('input[name="userName"]').val();
+	               var pw = $('input[name="pwd"]').val();
+	   
+	               if(!un || un.trim()==='') {
+	                   dc.utils.error('用名不能为空');
+	                   return;
+	               }
+	               un=un.trim();
+	   
+	               if(!pw || pw.trim()==='') {
+	                   dc.utils.error('密码不能为空');
+	                   return;
+	               }
+	               pw=pw.trim();
+	   
+	               dc.doLogin(un,pw,function(err){
+	                   if(err) {
+	                      dc.utils.error(err.msg);
+	                   } else {
+	                       var search = location.search;
+	                       var prePath = dc.cxt;
+	                       if(search && search != '') {
+	                           search = search.substr(1);
+	                           var ks = search.split('=')
+	                           if(ks) {
+	                               for(var i=0; i< ks.length; i=i+2 ) {
+	                                   if(ks[i] == 'prePath') {
+	                                       prePath = ks[i+1];
+	                                       break;
+	                                   }
+	                               }
+	                           }
+	                       }
+	                       dc.goTo(prePath);
+	                   }
+	               });
+	           })
+	   	   }
+	   	   
+	   	   $(document).ready(function(){ 
+	   		 init();
+	   		 
+	   		});
+	   		
+	   
+	   
+	   //注册
+	   
+	         function testDialog() {
+	               //dc.utils.showDialog({title:"测试对话框", content:'这是一个测试对话框'})
+	               var params = {title:'登录结果', buttons:[]};
+	   
+	               params.content = '登录成功';
+	               params.buttons.push({
+	                   title:'立即登录',
+	                   method: function() {
+	                       location.href=dc.cxt + '/uc/login.html';
+	                   }
+	               });
+	   
+	               params.buttons.push({
+	                   title:'返回首页',
+	                   method: function() {
+	                       location.href = dc.cxt;
+	                   }
+	               });
+	   
+	               dc.utils.showDialog(params);
+	           }
+	   
+	   	   var init = function() {
+	   		
+	   	   }
+	   
+	          function showMsg(msg) {
+	              $("#msgId").text(msg);
+	          }
+	   	   
+	   	   $(document).ready(function(){
+	              dc.init();
+	   
+	   		    $("#getCheckcode").click(function(){
+	   	    		   var mobile = $("[name='userName']").val();
+	   				   if(!mobile) {
+	                          dc.utils.error('手机号不能为空');
+	   				      return;
+	   				   }
+	   	    		   var url = dc.cxt + '/uc/checkCode';
+	   	    		   $.post(url,{btype:'1001',mobile: mobile},
+	   			    		   function(data,status){    
+	   						    //var jdata = eval("'" + data + "'");
+	                                  var jdata = JSON.parse(data);
+	                                  if(!jdata.success) {
+	                                      dc.utils.error(jdata.msg);
+	                                  }else {
+	                                      dc.utils.info(data);
+	                                  }
+	   			    		   }
+	   	    		   );
+	               });
+	   
+	              $("#submitRegister").click(function(){
+	                  var mobile = $("input[name='userName']").val();
+	                  var password = $("input[name='password']").val();
+	                  var cfPassword = $("input[name='cfPassword']").val();
+	                  var nickName = $("input[name='nickName']").val();
+	                  var VerificationCode = $("input[name='VerificationCode']").val();
+	   
+	                   if(!mobile || mobile.trim()==='') {
+	                       dc.utils.error('手机号不能为空');
+	                       return;
+	                   }
+	   
+	                  if(!password || password.trim()==='') {
+	                      dc.utils.error('密码不能为空');
+	                      return;
+	                  }
+	                  password = password.trim();
+	   
+	                  if(!cfPassword || cfPassword.trim()==='') {
+	                      dc.utils.error('确认密码不能为空');
+	                      return;
+	                  }
+	                  cfPassword = cfPassword.trim();
+	   
+	                  if(cfPassword!==password) {
+	                      dc.utils.error('两次输入密码不相等');
+	                      return;
+	                  }
+	   
+	                  if(!VerificationCode || VerificationCode.trim()==='') {
+	                      dc.utils.error('验证码不能为空');
+	                      return;
+	                  }
+	                  VerificationCode = VerificationCode.trim();
+	   
+	                  var url = dc.cxt + '/uc/doRegister';
+	                  $.post(url,{
+	                              userName:mobile,
+	                              password: password,
+	                              VerificationCode:VerificationCode,
+	                              nickName:nickName
+	                          },
+	                          function(data,status){
+	                               var params = {title:'登录结果', buttons:[]};
+	                               if(status === 'success' && data.success) {
+	                                   if(data.msg) {
+	                                       params.content = data.msg;
+	                                   }else {
+	                                       params.content = '登录失败';
+	                                   }
+	                               } else {
+	                                   params.content = '登录成功';
+	                                   params.buttons.push({
+	                                       title:'立即登录',
+	                                       method: function() {
+	                                           location.href=dc.cxt + '/uc/login.html';
+	                                       }
+	                                   });
+	   
+	                                   params.buttons.push({
+	                                       title:'返回首页',
+	                                       method: function() {
+	                                           location.href = dc.cxt;
+	                                       }
+	                                   });
+	                               }
+	                              dc.utils.showDialog(params);
+	                          }
+	                  );
+	   
+	              });
+	   		 
+	   		});
+	   
+	   
+	</script>
+  </head>
+  <body>
+
+      
+    <!--
+
+    	<div id="login11">
+    		<div class="fullbg"></div>
+    		<div class="loginpanel">
+    			<div id="closeLogin"></div>
+    			<div class="regtitle">登陆</div>
+    			<div class="regmsg"></div>
+    			
+    			<div id="bbsContentPanel">
+    	
+    			  <form action="<%=cxt%>/uc/doLogin", method="POST">
+		    			  <div class="input">
+		    			    <input type="text" class="form-control" placeholder="手机号" aria-describedby="basic-addon2" name="userName">
+		    			  </div>
+		    			  <div class="input">
+		    			    <input type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon2" name="pwd">
+		    			  </div>
+    			  
+    		
+    					<input id="doLogin" type="button" value="提   交" style="width: 150px;height: 40px;border-radius: 5px;background: #00b7ee;color: #fff;margin-left: 125px;outline: none;margin-top: 30px;"/><br/>
+    			  </form>
+    			</div>
+    			    		
+    		</div>
+    	
+    	</div>
+    	
+    	-->
+  	 
+  	 <!--
+    
+     <div id="reg11">
+     	<div class="fullbg"></div>
+     	<div class="regpanel">
+     		<div id="closeReg"></div>
+     		<div class="regtitle">注册</div>
+     		<div class="regmsg">
+     		</div>
+     		
+     					
+     					<div class="input" style="margin-top: 80px;">
+     					  <input type="text" class="form-control" placeholder="手机号" aria-describedby="basic-addon2" name="userName">
+     					</div>
+     					<div class="input">
+     					  <input type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon2" name="password">
+     					</div>
+     					<div class="input">
+     					  <input type="text" class="form-control" placeholder="确认密码" aria-describedby="basic-addon2" name="cfPassword">
+     					</div>
+     					<div class="input">
+     					  <input type="text" class="form-control" placeholder="昵称" aria-describedby="basic-addon2" name="nickName">
+     					</div>
+     					
+     					
+     					<div class="input" style="width: 220px;">
+     					  <input type="text" class="form-control" placeholder="验证码" aria-describedby="basic-addon2" name="VerificationCode" style="border-radius: 5px 0 0 5px;">
+     					</div>
+     		       
+ 							<div class="input" style="width: 150px;">
+ 				
+ 							  <input id="getCheckcode" type="button" value="获取验证码" style="position: absolute;bottom: 100px;right: 50px;height: 34px;background: #eee;display: block;width: 80px;border: 1px solid #ccc;border-radius: 0 3px 3px 0;border-left: none;outline: none;color: #555;font-size: 14px;">
+ 							</div>
+ 							
+     		       
+     		        
+     		        <input id="submitRegister"  type="button" value="提   交" style="width: 150px;height: 40px;border-radius: 5px;background: #00b7ee;color: #fff;margin-left: 125px;outline: none;margin-top: 10px;"/><br/>
+     		        
+     			</div>
+     	
+     	</div>
+     
+     </div>
+    
+     -->
+    <div class="quan1"></div> 
+    <div class="quan2"></div>
+
+    <div id="bbsBody" class="bbsBody" style="position:relative">
+
+	   <%- include('secs/header.html'); %>
+	   
+	   <div id="bbsContentPanel" style="position:relative; width:100%; height:100%;">
+	   
+	      <!-- 内容左则 -->
+		  <div id="contentLeft" class="contentLeft" style="width:100%;position:relative;
+		  display:inline-block;overflow:hidden;margin:0px auto;margin-top:-10px;">
+		        <!-- 滚动图片-->
+	           <div id="scrollPhoto" class="boxStyle" style="width:100%; height:500px; margin-top:0px;background: none;">
+	               <div id="scrollPhotoInner" style="position:relative; width:100%; height:450px; overflow:hidden; cursor:pointer">
+				        <div style="position:relative; width:100%; height:450px; overflow:hidden"> 
+						   <img width="100%" height="450px" class="scrollPhotoImg" src="/images/001.jpg"/>
+                        </div>
+					    <div style="position:relative; width:100%; height:450px; overflow:hidden"> 
+						   <img width="100%" height="450px" class="scrollPhotoImg" src="/images/002.jpg"/>
+                        </div>
+						<div style="position:relative; width:100%; height:450px; overflow:hidden"> 
+						   <img width="100%" height="450px" class="scrollPhotoImg" src="/images/001.jpg"/>
+                        </div>
+						   
+				   </div>
+				   <div style="width:100%;height:20px; text-align:center;margin-top: 10px;;">
+						 <li class="scrollButton" id="0">
+							  <a class='scrollButtona'>
+							  </a>
+						</li>
+                        <li class="scrollButton">
+							 <a class='scrollButtona' id="1">
+						     </a>
+						</li>
+						 <li class="scrollButton">
+							 <a class='scrollButtona' id="2">
+						     </a>
+						</li>
+				   </div>
+	           </div>
+			   
+			   <!-- 导航栏 -->
+			   <div id="bbsNavigator" class="bbsNavigator boxStyle" style="border:none; margin-top:3px; margin-bottom:0px;height: 70px;">
+
+	                <div id="bbsNavigatorLeft" class="bbsNavigatorLeft" style="float:left;">
+                        <li class="bbsMenu bbsMenuSelectStatus" style="" id="topicTypeId=0">全部</li>
+                        <% if(topicTypeList) { %>
+                             <% for(var i=0; i < topicTypeList.length ; i++) { %>
+                                <li class="bbsMenu" id="topicTypeId=<%=topicTypeList[i].id%>">
+                                    <%=topicTypeList[i].title%>
+                                </li>
+                             <% } %>
+                         <% } %>
+			        </div>
+			     <div id="bbsNavigatorRight" class="bbsNavigatorRight" style="float:right; margin-right:8px;">
+	                <li class="bbsMenuCond"><a id="hot" href="#" onclick="loadTopicListByQuickBtn(this)">热门</a></li>
+					<li class="bbsMenuCond"><a id="latest"  href="#" onclick="loadTopicListByQuickBtn(this)">最新</a></li>
+					<li class="bbsMenuCond"><a id="essence"  href="#" onclick="loadTopicListByQuickBtn(this)">精华</a></li>
+			     </div>
+			  </div>
+			  
+			  <!-- 主题贴列表 -->
+			  <div id="topicList" class="topicList boxStyle" style="position: relative;width:100%;">
+
+			  </div>
+			  
+			  <!-- 翻页栏-->
+			   <div class="pageNavigator boxStyle" style="width:100%; height:70px; margin-top:0px; margin-bottom:10px;  text-align:center; border-radius: 0px 0px 5px 5px;line-height: 70px;">
+				  <div id="pageContainer" style="height:100%;color: #878686;font-size: 14px;">
+
+			      </div>
+			  </div>
+			  
+			  <!-- 发贴编辑器-->
+              <div class="boxStyle" style="width:100%; min-height:400px; margin-top:30px;">
+                  <%- include('bbs/topicEditor.html');  %>
+			  </div>
+			
+
+		  
+	   </div>
+	   
+	   
+
+           <!-- 内容右则 -->
+           <!--
+           <div id="contentRight" style="width:180px;height:100%;display:inline-block;position:relative;
+           margin-left:0px;overflow:hidden">
+               <div class="createTopicButton boxStyle">
+                   <a id="createTopicButton" href="#" style="height:100%; cursor: pointer; font-weight:bolder; font-size:x-large; text-decoration:none;">创建主贴</a>
+               </div>
+
+               <div class="boxStyle" style="height:50px; width:100%; margin-top:10px;
+			  text-align:center;line-height:50px;">
+                   <span class="">版主:Deowcool</span>
+               </div>
+
+               <div class="quickNav boxStyle" style="-height:100px; min-height:100px; width:100%; margin-top:10px;
+                  line-height:35px;">
+                   <ul class="quickNavItem">快速导航
+                       <li class="" style="">快速入门</li>
+                       <li>豆壳法规</li>
+                       <li>豆壳认证</li>
+                       <li>豆壳京东</li>
+                       <li>豆壳天猫</li>
+                       <li>豆壳商城</li>
+                   </ul>
+               </div>
+
+               <div class="boxStyle" style="-height:100px; min-height:100px; width:100%; margin-top:10px;
+			  text-align:left; line-height:35px;">
+                   <ul class="quickNavItem">常见问题
+                       <li>快速入门</li>
+                       <li>豆壳法规</li>
+                       <li>豆壳认证</li>
+                       <li>豆壳京东</li>
+                       <li>豆壳天猫</li>
+                       <li>豆壳商城</li>
+                   </ul>
+               </div>
+
+               <div class="boxStyle" style="-height:100px; min-height:100px; width:100%; margin-top:10px;
+			  text-align:center;line-height:50px; border-radius: 5px; background-color:#FFFFFF;">
+                   <span>官方微薄</span>
+               </div>
+
+               <div class="boxStyle" style="-height:100px; min-height:100px; width:100%; margin-top:10px;
+			  text-align:center;line-height:50px; ">
+                   <span>官方QQ群</span>
+               </div>
+
+               <div class="boxStyle" style="-height:100px; min-height:100px; width:100%; margin-top:10px;
+			  text-align:center;line-height:50px;">
+                   <span>官方微信</span>
+               </div>
+
+
+           </div>
+           -->
+
+	</div>
+	<div class="bottom123">
+		<div class="bottom_33"><div class="bottom_333"><a href="#"></a></div></div>
+		<div class="bottom_22"><div class="bottom_222">豆壳交流群</div></div>
+		<div class="bottom_11"><div class="bottom_111">iFollow儿童防丢卫士</div></div>
+	</div>
+
+	<%- include('secs/copyright.html');  %>
+	
+
+  </body>
+</html>

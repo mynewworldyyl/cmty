@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Test</title>
+        
+        <style>
+          * {
+            margin:0px;
+            padding:0px;
+          }
+          .boxdiv {
+             width:100%; height:auto; border: dashed 1px blue; margin-top:10px; text-align: center;
+          }
+          
+          .contentDvi {
+            text-align: left;
+          }    
+        </style>   
+        <script type="text/javascript" src="/javascripts/jquery_min.2.1.3.js"></script>
+        <script type="text/javascript" src="/javascripts/dc.js"></script>
+        
+       <script type="text/javascript">
+	       var initLogin = function() {
+	    	   $("#loginButton").click(function(){
+	    		   
+	    		   var un = $("#loginUserName").val();
+	    		   var pwd = $("#pwd").val();
+	    		   var cid = $("#cid").val();
+	    		   
+	    		   xrf.uc.doLogin(un, pwd, function(err,data){
+                       if(err) {
+                           console.log(err);
+                       }else {
+                           console.log(data);
+                           $('input[name="loginKey"]').val(data.data.loginKey);
+                           if(data == null) {
+                               // $("#loginStatu").css({'font': 'bold 20px arial,sans-serif'});
+                               //$("#loginStatu").text("登录: "+un);
+                           }else {
+                               // $("#loginStatu").css({'color' : 'red'});
+                               //$("#loginStatu").text(data.msg);
+                           }
+                       }
+	    		   });
+	    		   $("#loginUserName").val(un);
+	    		   $("#pwd").val(pwd);
+	    		   //$("#cid").val(cid);
+
+	    		 });
+	       }  
+	       
+	       $(document).ready(function(){
+	    	   
+	    	  initLogin();
+	    	  
+	    	  $("#apkInfo").click(function(){
+	    		  if(!xrf.uc.isLogin()) {
+	    			  alert("notLogin");
+	    			  return;
+	    		  }
+	    		   //var url = '/bbs/file/apkinfo';
+                  //var url = xrf.urls.getNodeServerUrl(xrf.urls.LOGIN)
+                  xrf.urls.getHelper('/bbs/file/apkinfo', {},
+                          function (err, data) {
+                              // var jdata = eval("'" + data + "'")
+                              if(err) {
+                                  alert(err);
+                              }else {
+                                  //data = dc.parseResponse(data);
+                                  //var p = decodeURI(data.data.path);
+                                  //console.log(p);
+                                  console.log();
+                                  //var strs = ['path:', data.data.path, 'serialNum:',data.data.serialNum, 'versionName:',data.data.versionName];
+                                  $("#info").text(JSON.stringify(data));
+                              }
+                          });
+	    		 });
+
+               $("#deviceInfo").click(function(){
+                   if(!dc.isLogin) {
+                       alert("notLogin");
+                       return;
+                   }
+                   var url = dc.cxt + '/file/deviceinfo';
+                   $.get(url,
+                           function(data,status){
+                               // var jdata = eval("'" + data + "'")
+                               if(status == 'success' && data.success) {
+                                   console.log();
+                                     $("#deviceInfoPanel").text(JSON.stringify(data));
+                               } else {
+                                   alert(data.msg);
+                               }
+                           }
+                   );
+               });
+	    	 
+	    	  $("#apkFileDownload").click(function(){
+	    		   var url = xrf.cxt + '/file/download?fileId='+$("#fileId").val();
+	    		   this.href = url;
+	    		   //this.click();
+	    		 });
+
+
+               $("#submitApk").click(function(){
+                   $("#apkForm").submit();
+               });
+	    	  
+	       });
+       </script>   
+    </head>
+    
+    <body>
+    
+    <div style="border:solid 2 gray; margin-left:auto; margin-right:auto; width:1000px; height:1500px;">
+       <div class="boxdiv">
+           <div class="contentDvi">
+            <h1 id='loginStatu'>登陆:</h1>
+		    <form id="loginForm" action="/bbs/uc/doLogin", method="POST"  target="#_blank" enctype="multipart/form-data">
+			    userName <input id="loginUserName" type="text" name="loginUserName" value="13266878991"/><br/>
+			    password:<input id="pwd" type="text" name="pwd" value="888888"/><br/>
+			    cid <input id="cid" type="text" name="cid" value=""/><br/>
+			    <input id="loginButton" type="button" value="提交" />
+                <input type="hidden" name="loginKey" value=""/><br/>
+		    </form>
+           </div>
+           
+       </div>
+       
+       <div class="boxdiv">
+        <div class="contentDvi">
+             <h1>Android APK上传</h1>
+		    <form  id="apkForm"  action="/bbs/file/upload" method="POST" target="#_blank", enctype="multipart/form-data">
+	           <input type="hidden" name="module" value="apkUpdateFile"/><br/>
+	           版本名称<input type="text" name="versionName" value=""/><br/>
+	           序列号：   <input type="text" name="serialNum" value=""/><br/>
+		  file: <input type="file" name="apkfile"/><br/>
+	           <input id="submitApk" type="button" value="提交" />
+           </form>
+            </div>
+           
+       </div>
+
+       <div class="boxdiv">
+        <div class="contentDvi">
+              <h1>最新APK信息</h1>
+            <a id="apkInfo" target="" href="#">APK测试文件信息</a>
+            <span id="info"> </span>
+            </div>
+       
+       </div>
+
+       <!-- <div class="boxdiv">
+            <div class="contentDvi">
+                <h1>最新设备更新包信息</h1>
+                <a id="deviceInfo" target="" href="#">获取设备更新包信息</a>
+                <span id="deviceInfoPanel"> </span>
+            </div>
+
+        </div>-->
+       
+       <div class="boxdiv">
+           <div class="contentDvi">
+             <h1>APK文件下载:</h1>
+              fileId: <input type="text" id="fileId" value="03"/><br/>
+             <a id="apkFileDownload" href="#" target="#_blank">点击下载</a>
+            </div>        
+       </div>
+
+    </div>
+    </body>
+    
+</html>

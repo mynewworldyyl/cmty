@@ -1,0 +1,33 @@
+<%
+var ps = pageSize;
+if(!ps) {
+ps = 3;
+}
+var pc = count/ps;
+%>
+
+<% if(0 == currentPage) { %>
+    <span class="pageBtnDisable">首页</span>
+    <span class="pageBtnDisable">上一页</span>
+<% } else { %>
+    <span class="pageBtnEnable" id="0" onclick="changePage(this)">首页</span>
+    <span class="pageBtnEnable" id="<%=currentPage-1%>"  onclick="changePage(this)">上一页</span>
+<% } %>
+
+
+<%     for(var i=0; i < pc; i++) {
+        cls =' pageBtnEnable';
+        if(i == currentPage) {
+            var cls = 'currentPage';
+        }
+%>
+    <span class="<%=cls%>" id="<%=i %>"  onclick="changePage(this)"><%=i+1 %></span>
+<% } %>
+
+<% if(pc == currentPage+1) { %>
+    <span class="pageBtnDisable" >下一页</span>
+    <span class="pageBtnDisable">末页</span>
+<% } else { %>
+    <span class="pageBtnEnable" id="<%=currentPage+1%>"  onclick="changePage(this)">下一页</span>
+    <span class="pageBtnEnable" id="<%=pc-1%>" onclick="changePage(this)">未页</span>
+<% } %>

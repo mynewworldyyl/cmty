@@ -1,0 +1,65 @@
+<% for(var i=0; i < topics.length; i++) { %>	
+	
+		<% if(i < topics.length-1) { %>		
+		<div class="topicListItem">
+		<% }else{ %>
+		  <div class="topicListItem" style="border-bottom: 1px solid #dfdfdf;">
+		<% }%>
+    <div class="topicListItemImage">
+        <img class="headIcom" src="<%=topics[i].createdBy.iconUrl %>"></img>
+    </div>
+    <div id="topicListItemContent">
+        <div class="listItemTop">
+
+            <% if(topics[i].locked) { %>
+            <img class="lockedIcon" src="/images/locked.png"></img>
+            <% } %>
+
+            <% if(topics[i].topSeq < 0) { %>
+            <span class="topicTopPosition"><%='置顶'%></span>
+            <% } %>
+            <span class="itemTopicType"><%=topics[i].topicType.title %></span>
+            <a class="itemTopicTitle" href="<%=cxt %>/bbs/topic.html?topicId=<%=topics[i].id %>" target="_blank" >
+                <%=topics[i].title %>
+            </a>
+            <% if(topics[i].firstTopic) { %>
+                                      <span class="itemTopicStatu"><%='新人贴'%></span>
+            <% } %>
+            <% if(topics[i].resolved) { %>
+                                      <span class="itemTopicStatu"><%='已解决'%></span>
+            <% } %>
+            <% if(topics[i].recall) { %>
+                                      <span class="itemTopicStatu"><%='已撤销'%></span>
+            <% } %>
+
+            <% if( topics[i].essence ) { %>
+                <span class="itemTopicStatu"><%='精华'%></span>
+            <% } %>
+
+            <span class="getReturnNumFeedback"><%=topics[i].readNum %></span>
+        </div>
+        <div class="listItemBottom">
+            <div class="itemBottomStyle">
+                <span> <%=topics[i].createdBy.nickName %></span>
+                <span>于</span>
+                <span class="listTopicUpdateTime"><%=topics[i].createdDateStr %></span>
+                <span>发表</span>
+            </div>
+            <div class="itemBottomStyle" style="margin-left:10px">
+               |
+            </div>
+            <div  class="itemBottomStyle" style="margin-left:10px">
+                <span><%=topics[i].updatedBy.nickName %></span>
+                <span>于</span>
+                <span class="listTopicUpdateTime"><%=topics[i].updatedDateStr %></span>
+                <span>最后回复</span>
+            </div>
+            <div  class="getReturnNumReadBox">
+                <span class="getReturnNumRead"><%=topics[i].noteNum %></span>
+            </div>
+        </div>
+    </div>
+</div>  
+
+<% } %>
+

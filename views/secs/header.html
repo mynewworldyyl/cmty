@@ -1,0 +1,121 @@
+﻿<style>
+    .myMenuBtn * {
+        padding: 0px;
+        margin:0px;
+    }
+    .myMenuBtn { display:inline-block;cursor:pointer }
+    .myMenuBtn>ul {
+        background-color:linen;list-style:none;position:absolute;display:none;width:80px;padding-left: 5px;
+    }
+    .myMenuBtn>ul>li{padding-left:5px; position:relative;}
+    .myMenuBtn>ul>li{color:#000;}
+    .myMenuBtn>ul>li:hover{background:#d3dbb3;}
+    .myMenuBtn>ul>li>a{cursor:pointer;text-decoration:none;}
+
+</style>
+
+<div id="bbsHeader" style="width:100%;  ">
+			<div id="bbsHeaderTop" style="width:100%;height:80px;">
+					<div id="bbsHeaderTopLeft" style="float:left;width:600px;height:100%;">
+						<div id="bbsHeaderLogoTitle" style="float:left; height:100%; width:160px;" onclick="javascript:window.location.href='/bbs/'">
+							  
+						</div>
+						<div id="bbsHeaderInfo" style=" float:left; width:400px; height:50px;">
+							<div id="bookMarkThis" style=" width:90px; height:30px; margin-top:15px;background: #00b7ee;border-radius: 5px;float: left;">
+								
+								<div id="bookMarkThisTitle" style="float:left; width:100%; height:100%;padding: 6px;padding-left: 8px;">
+								     <a href="#" style="border:none;display:inline-block; text-decoration:none;color: #fff;"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;收藏本版</a>
+								</div>
+							</div>
+							
+							<div id="bbsHeaderBaseInfo" style="width:250px;height:30px;float: left;margin-left: 20px;margin-top: 25px;color: #757575;">
+							   <span style="border:none">今日: <%=header.todayTopicNum%></span>
+							   <span style="padding: 0 5px 0 5px;">|</span>
+							   <span style="border:none">主题: <%=header.totalTopicNum%></span>
+							   <span style="padding: 0 5px 0 5px;">|</span>
+							   <span style="border:none">排名: <%=header.sortedSeq%></span>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div id="bbsHeaderTopRight" style="float:right;width:200px;height:100%; text-align: right;padding-right: 0px;padding-top: 20px;">	
+						<ul id="bbsHeaderAccountInfo"
+                             class="reg">
+
+                       
+							
+							<% if (!userInfo || !userInfo.success || !userInfo.data.userName ) { %>
+                               
+                               <li style="display:inline-block;position:relative; top: 5px; ">
+                                   <a href="<%=cxt %>/uc/register.html" style="text-decoration:none;padding: 0 20px 0 20px;">注册</a>
+                               </li>
+                              
+                                <li style="display:inline-block;  position:relative; top: 5px;">
+								  <a href="<%=cxt %>/uc/login.html" style="text-decoration:none;padding-right: 10px;" >登录</a>
+                                </li>
+							<% } else { %>
+
+								<li style="display:inline-block; position:relative; top: -15px; left: -60px;">
+                                    <% if( locals.act ) { %>
+									    <img width="20px" height="20px" id="headIcom" src="<%=act.iconUrl%>"></img>
+                                    <% } %>
+								</li>
+
+                                <li style="display:inline-block;left: -60px;top: -15px;" class='headerButton'>
+                                    <a id="logout" href="#"  >退出(<%=userInfo.data.userName %>)</a>
+                                </li>
+
+                                <li style="display:inline-block;left: -100px;top: -5px;" class='headerButton'>
+                                    <a id="actInfo" href="/bbs/uc/actInfo.html">设置</a>
+                                </li>
+
+                                <li class="myMenuBtn headerButton" style="left: -80px;z-index: 10;top: -5px;">
+                                    <a href="#">我的</a>
+                                    <ul>
+                                        <li style="text-align: center;">
+                                            <a href="#">贴子</a>
+                                        </li>
+                                        <li style="text-align: center;">
+                                            <a href="#">收藏</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <% if (userInfo.data.userName=='13266878991' ) { %>
+                                    <li style="display:inline-block" class='headerButton'>
+                                        <a  href="<%=cxt %>/admin.html" >管理</a>
+                                    </li>
+                                <% } %>
+
+						    <% }  %> 
+						</ul>
+						
+					</div>
+					
+			</div>
+			<!--
+			<div id="bbsHeaderNav"  style="width:100%; height:30px;">
+				  <span id="navMenuTitle" style="border:none">主页-》论坛-》活动</span>
+			</div>
+			-->
+	   </div>
+
+<script  type="text/javascript" >
+
+    $(document).ready(function()
+    {
+        /* 菜单初始化 */
+        //$('#myMenuBtn>ul>li').find('li:has(ul:not(:empty))>a').append("<span class='arrow'>></span>");
+        // 为有子菜单的菜单项添加'>'符号
+
+        $(".myMenuBtn").bind('mouseover',function() // 顶级菜单项的鼠标移入操作
+        {
+            $(this).children('ul').slideDown('fast');
+        }).bind('mouseleave',function() // 顶级菜单项的鼠标移出操作
+        {
+            $(this).children('ul').slideUp('fast');
+        });
+
+    });
+
+</script>

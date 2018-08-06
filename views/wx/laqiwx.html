@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta name="Keywords"  content="" />
+    <meta name="description" content="" />
+    <title>免费安全共享WIFI</title>
+    <link href="http://cdn.wiair.com/wifi/skin2/css/base.css" rel="stylesheet"/>
+</head>
+
+<body class="n_body">
+<div class="n_top">
+    <div class="n_guid">
+        <div class="fl">
+            <a href="http://wifi.wiair.com/faq.html" class="links">上不了网？</a>
+        </div>
+        <div class="fr"><a href="http://wifi.wiair.com/service.html" class="links">联系客服</a></div>
+    </div>
+    <dl class="index-dl">
+        <dt><img src="http://cdn.wiair.com/wifi/skin2/images/i-1.png"></dt>
+        <dd class="name">欢迎使用免费安全共享WiFi</dd>
+        <dd>已有<b id='total'>0</b>人完成认证连接</dd>
+        <dd>本网络由安全联盟提供网址过滤</dd>
+    </dl>
+    <a href="javascript:;" id="submitBtn" class="indexBtn">立即上网</a>
+</div>
+<ul class="n_menu">
+    <li>
+        <p>网络安全</p>
+        <p class="fine"></p>
+    </li>
+    <li>
+        <p>信号强度</p>
+        <p class="fine"></p>
+    </li>
+    <li>
+        <p>当前网速</p>
+        <p><span class="speeds"><em id="speed_sp">2.6</em>M/s</span></p>
+    </li>
+</ul>
+<div class="n_bot">
+    <h1>上网认证流程</h1>
+    <p>1.点击"立即上网",跳转至微信</p>
+    <p>2.在弹出的公众号界面,点击"关注我们",然后在弹窗界面,点击"关注"即完成认证.一定要关注才能上网.</p>
+    <p>3.点击右上角"完成",即可获取2小时上网时长</p>
+</div>
+<iframe id="ajaxIframe" style="display:none;"></iframe>
+</body>
+</html>
+<script type="text/javascript" src="http://cdn.wiair.com/wifi/skin2/js/script1.3.js"></script>
+<script type="text/javascript">
+    window.onload = function(){
+
+        document.getElementById('total').innerHTML = Math.round(143235+(((Date.parse(new Date()) - Date.parse('2018-06-05')) / 1000 / 86400) * 200)).toString();
+
+        var i = 0;
+        var speed_sp = document.getElementById('speed_sp');
+        var speedTtimer = setInterval(function(){
+            if( i > 33){
+                speed_sp.innerHTML = "2.6";return;
+            }
+            var random_num = parseInt(10*Math.random());
+            speed_sp.innerHTML = random_num;
+            i++;
+        },80);
+
+        document.addEventListener("visibilitychange", function(){
+            if(document.hidden){
+                init();
+                var ios_tip = document.getElementById("ios_tip");
+                if(ios_tip){
+                    ios_tip.remove();
+                }
+            }
+        });
+
+        var barTimeInter = null;
+
+        var run = function(){
+            // 防止用户误点
+            var _this = document.getElementById("submitBtn");
+            _this.onclick = function(){return false;}
+            _this.setAttribute("class", "indexBtn checking");
+            _this.innerHTML = '<div class="pro-text">正在唤起微信进行关注...</div><div class="progress-bar" id="pro_bar"></div>';
+            allowRun(weChatRun);
+            var	i=0,pro_bar = document.getElementById('pro_bar');
+            barTimeInter = setInterval(function(){
+                if(i>=110){
+                    init();
+                }else {
+                    pro_bar.style.width = (i++)+"%";
+                }
+            },100);
+        }
+
+        var init = function(){
+            barTimeInter&&clearTimeout(barTimeInter);
+            callUpTimestamp&&clearTimeout(callUpTimestamp);
+            var _this = document.getElementById("submitBtn");
+            _this.onclick = run;
+            _this.setAttribute("class", "indexBtn");
+            _this.innerHTML = "立即上网";
+        }
+
+        exceptionTerminal(init);
+
+        document.getElementById('submitBtn').style.display = 'block';
+
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?84d8289c9db340afb43dc5a68412e45f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    }
+</script>

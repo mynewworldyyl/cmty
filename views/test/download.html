@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <script type="text/javascript" src="/javascripts/jquery_min.2.1.3.js"></script>
+    <title>NodeJS文件下载</title>
+      <script>
+          var u = '/bbs/file/delete?fileId=';
+           function deleteFile(elt,id) {
+                var url = u + id;
+               $.get(url,function(data,state,xhr){
+                    $(elt).paren().remove();
+                    console.log(data);
+               });
+           }
+      </script>
+  </head>
+  <body>
+  <div style="margin-left: auto;margin-right: auto; width:1200px;position:relative;border:solid 1px lightslategray">
+      <% if(locals.files) { %>
+        <% for(var i =0 ; i< files.length; i++) {
+            var info = getInfo(files[i]);
+            var url = '/bbs/file/download?fileId=' + files[i]._id.toHexString();
+        %>
+          <div>
+              <% if(info.isImage) { %>
+              <img src="<%=url+'&width=60&height=60'%>">
+              <% } %>
+              <span><%=info.name%></span>
+              <span><%=info.size%></span>
+              <span><%=info.contentType%></span>
+              <span><%=info.uploadDate%></span>
+              <!--            <span><%=info.metadata%></span>
+              -->
+              <span><%=url%></span>
+              <a href="<%=url%>">下载</a>
+              <a href="#" onclick="deleteFile(this,'<%=files[i]._id.toHexString()%>')">删除</a>
+          </div>
+
+        <% } %>
+      <% } %>
+
+  </div>
+  </body>
+</html>

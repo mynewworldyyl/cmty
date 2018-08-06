@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JQuery Mobile</title>
+    <link rel="stylesheet" href="/stylesheets/jquery.mobile-1.4.5.min.css" />
+    <script type="text/javascript" src="/javascripts/jquery_min.2.1.3.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+    <div data-role="page">
+
+        <div data-role="header" >
+            <h1>JQuery</h1>
+            <a href="/wx/test/mainpage1.html" data-icon="home">Home</a>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <div data-url="map-page" data-role="page" id="map-page">
+                <div data-role="header" data-position="fixed">
+                    <div class="segmented-control ui-bar-d">
+                        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                            <input name="switch" id="list-switch" checked="true" type="radio">
+                            <label for="list-switch">List</label>
+                            <input name="switch" id="map-switch" type="radio">
+                            <label for="map-switch">Map</label>
+                        </fieldset>
+                    </div>
+                </div>
+                <div role="main" class="ui-content ui-content-list">
+                    <div id="list-canvas">
+                        <ul id="list-results" data-role="listview">
+                            <li data-marker-info="44.811805,-93.176352">
+                                <div style="display:none;">
+                                    <div class="ui-gmap-marker-info">
+                                        <h1><a id="gmap-marker-link" href="#">Fast Clinic</a></h1>
+                                        <p>8888 Fast Rd</p>
+                                    </div>
+                                </div>
+                                <a href="#">
+                                    <h1 class="ui-gmap-marker-title wrap">Fast Clinic</h1>
+                                    <div class="ui-li-count">
+                                        <span>0.71 miles</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li data-marker-info="44.788673,-93.205671">
+                                <div style="display:none;">
+                                    <div class="ui-gmap-marker-info">
+                                        <h1><a id="gmap-marker-link" href="#">North Memorial Care</a></h1>
+                                        <p>8398 Jefferson Ct</p>
+                                    </div>
+                                </div>
+                                <a href="#">
+                                    <h1 class="ui-gmap-marker-title wrap">North Memorial Care</h1>
+                                    <div class="ui-li-count">
+                                        <span>0.71 miles</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li data-marker-info="44.750453,-93.204766">
+                                <div style="display:none;">
+                                    <div class="ui-gmap-marker-info">
+                                        <h1><a id="gmap-marker-link" href="#">Fast Clinic-Newtown</a></h1>
+                                        <p>34555 Dove Trl</p>
+                                    </div>
+                                </div>
+                                <a href="#">
+                                    <h1 class="ui-gmap-marker-title wrap">Fast Clinic-Newtown</h1>
+                                    <div class="ui-li-count">
+                                        <span>4.15 miles</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li data-marker-info="44.736285,-93.207487">
+                                <div style="display:none;">
+                                    <div class="ui-gmap-marker-info">
+                                        <h1><a id="gmap-marker-link" href="#">Brad's Medical Clinic</a></h1>
+                                        <p>3444 Great Ave</p>
+                                    </div>
+                                </div>
+                                <a href="#">
+                                    <h1 class="ui-gmap-marker-title wrap">Brad's Medical Clinic</h1>
+                                    <div class="ui-li-count">
+                                        <span>5.09 miles</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li data-marker-info="44.723595,-93.176812">
+                                <div style="display:none;">
+                                    <div class="ui-gmap-marker-info">
+                                        <h1><a id="gmap-marker-link" href="#">Super Clinics</a></h1>
+                                        <p>15560 Pilot Rd</p>
+                                    </div>
+                                </div>
+                                <a href="#">
+                                    <h1 class="ui-gmap-marker-title wrap">Super Clinics</h1>
+                                    <div class="ui-li-count">
+                                        <span>5.58 miles</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li id="show-more"><a href=""><h1>Show more</h1></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div role="main" class="ui-content" id="map-canvas" data-initial-view="44.80,-93.16,10" style="display:none;"></div>
+                <!-- Load map assets at bottom for performance -->
+                <script type="text/javascript" src="jquery.gmap.js"></script>
+                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+                <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/infobox/1.0/src/infobox_packed.js"></script>
+            </div>
+        </div><!-- content -->
+
+        <div data-role="footer" data-position="fixed"  style="overflow:hidden;">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="../mainpage1.html" data-role="button" data-icon="home">Home</a></li>
+                    <li><a href="#" data-role="button" data-icon="back">Back</a></li>
+                    <li><a href="#" data-role="button" data-icon="arrow-r">Main</a></li>
+                    <li><a href="#" data-role="button" data-icon="arrow-l">Reset</a></li>
+                    <li><a href="#" data-role="button" data-icon="grid">Menu</a></li>
+                </ul>
+            </div>
+        </div><!-- footer-->
+
+    </div><!-- page end -->
+
+</body>
+</html>

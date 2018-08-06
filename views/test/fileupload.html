@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <title>NodeJS文件上传</title>
+  </head>
+  <body>
+  <% if(locals.msg) {%>
+     <span style="color:red;font-size:30px;"><%=locals.msg%></span>
+  <% } %>
+  <form id="uploadForm" enctype="multipart/form-data" action="/bbs/file/mupload" method="post">
+      fileAttr01: <input type="text" name="fileAttr01" value="fileattr01"/><br/>
+      fileAttr02: <input type="text" name="fileAttr02" value="fileattr02"/><br/>
+      File: <input type="file" name="userPhoto" /><br/>
+      <input type="submit" value="Upload File" name="submit"><br/>
+  </form>
+
+
+  </body>
+</html>

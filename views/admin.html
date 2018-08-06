@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+     <%- include('secs/comm_header.html'); %>
+	<style>
+
+	</style>
+	<script  type="text/javascript">
+	   $(document).ready(function(){
+           dc.init();
+		});
+	</script>
+  </head>
+  <body>
+  <%- include('secs/navigatorBar.html'); %>
+    <div id="bbsBody" class="bbsBody" style="">
+
+	    <%- include('secs/header.html'); %>
+	   
+	    <div id="bbsContentPanel" style="border:none; width:100%; height:100%;">
+	       <div>
+               <h1>主贴类型</h1>
+               <% if(success && result) {%>
+                  <span><%=result.title %> successfully</span>
+               <% } else if( result ){ %>
+                  <span>失败</span>
+               <% } %>
+               <form action="<%=cxt %>/bbs/createTopicType", method="POST">
+                   Title <input type="text" name="title" value=""/><br/>
+                   Description:<input type="text" name="desc" value=""/><br/>
+                   <input type="submit" value="提交"/><br/>
+               </form>
+
+           </div>
+        </div>
+   
+	</div>
+	
+	<%- include('secs/copyright.html');  %>
+
+  </body>
+</html>

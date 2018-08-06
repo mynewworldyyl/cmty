@@ -1,0 +1,223 @@
+#bbsHeaderLogoTitle{
+	background: url('/images/logo_bbs.png') no-repeat left top;
+}
+.glyphicon-star{
+	color: #fff;
+}
+.reg a{
+	color: #757575;
+}
+.reg a:hover{
+	color: #00b7ee;
+}
+#reg11{
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	position: absolute;
+}
+#login11{
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	position: absolute;
+}
+.fullbg{
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.6;
+}
+.regpanel{
+	position: absolute;
+	background: #fff;
+	width: 400px;
+	height: 430px;
+	border-radius: 5px;
+	
+}
+.loginpanel{
+	position: absolute;
+	background: #fff;
+	width: 400px;
+	height: 300px;
+	border-radius: 5px;
+}
+.regtitle{
+	width: 100px;
+	height: 80px;
+	font-size: 24px;
+	font-family: 'SimHei';
+	padding: 20px 0 0 20px;
+	float: left;
+
+}
+.logintitle{
+	width: 100px;
+	height: 80px;
+	font-size: 24px;
+	font-family: 'SimHei';
+	padding: 20px 0 0 20px;
+
+}
+.regmsg{
+	width: 300px;
+	float: right;
+	height: 80px;
+	padding: 20px 0 0 20px;
+	color: #757575;
+}
+.input{
+	width: 300px;
+	margin-left: 50px;
+}
+.input-group{
+	width: 300px;
+	margin-left: 50px;
+}
+.input-group-addon{
+
+}
+.input2{
+	
+}
+.form-control{
+	margin:20px 0 20px 0;
+}
+#closeReg{
+	width: 25px;
+	height: 25px;
+	margin-top: -25px;
+	float: right;
+	background: url('/images/close.png') no-repeat ;
+	cursor: pointer;
+}
+#closeLogin{
+	width: 25px;
+	height: 25px;
+	margin-top: -25px;
+	float: right;
+	background: url('/images/close.png') no-repeat ;
+	cursor: pointer;
+}
+select{
+	border: 1px solid #6e94df;
+	outline: none;
+	color: #878686;
+	height: 30px;
+}
+#edui1_elementpath{
+display: none;
+}
+
+.quan1{
+	width: 250px;
+	height: 250px;
+	background: url('/images/quan1.png') no-repeat ;
+	position: absolute;
+	top: -125px;
+	right: -125px;
+	z-index: 10;
+}
+.quan2{
+	width: 350px;
+	height: 350px;
+	background: url('/images/quan2.png') no-repeat ;
+	position: absolute;
+	top: 500px;
+	left: -200px;
+	z-index: 10;
+}
+.actInfo span{
+	height: 30px;
+	padding: 20px;
+	padding-top: 20px;
+
+}
+.actInfo input{
+	height: 20px;
+	border: 1px solid #eee;
+	outline: none;
+
+}
+.bottom123{
+	width: 1000px;
+	height: 200px;
+	text-align: center;
+	color: #878686;
+	margin-top: 50px;
+	
+}
+.bottom_11{
+	width: 200px;
+	height: 200px;
+	background:  url('/images/ifollow_bbs.png') no-repeat center top;	
+	float: right;
+}
+.bottom_111{
+	margin-top: 170px;
+}
+.bottom_22{
+	width: 200px;
+	height: 200px;
+	background:  url('/images/qq_bbs.png') no-repeat center top;	
+	float: right;
+}
+.bottom_222{
+	margin-top: 170px;
+}
+.bottom_33{
+	width: 200px;
+	height: 60px;
+	background:  url('/images/kefu.png') no-repeat center bottom;	
+	float: right;
+}
+.bottom_333{
+	display: block;
+	width: 200px;
+	height: 60px;	
+}
+.bottom_333 a{
+	cursor: pointer;
+	display: block;
+	width: 200px;
+	height: 60px;	
+	
+}
+@media screen and (max-width:1440px){
+			.quan1{
+				top: -150px;
+				right: -150px;
+			}
+			.quan2{
+				top: 500px;
+				left: -270px;
+			}
+			
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5), 
+       only screen and (-o-min-device-pixel-ratio: 1.5),
+       only screen and (min-device-pixel-ratio: 1.5) {
+       #bbsHeaderLogoTitle{
+       	background: url('/images/logo_bbs@2x.png') no-repeat left top;
+       	background-size: 150px auto;
+       }
+       #closeReg{
+       	background: url('/images/close@2x.png') no-repeat;
+       	background-size: 25px auto;
+       }
+       #closeLogin{
+       	background: url('/images/close@2x.png') no-repeat;
+       	background-size: 25px auto;
+       }
+       .quan1{
+       	background: url('/images/quan1@2x.png') no-repeat;
+       	background-size: 250px auto;
+       }
+       .quan2{
+       	background: url('/images/quan2@2x.png') no-repeat;
+       	background-size: 350px auto;
+       }
+      
+}

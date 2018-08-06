@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+  
+     <%- include('../secs/comm_header.html'); %>
+   
+	<style>
+
+	</style>
+	<script  type="text/javascript">
+		
+	   var init = function() {
+		$('#doLogin').click(function(){
+            var un = $('input[name="userName"]').val();
+            var pw = $('input[name="pwd"]').val();
+
+            if(!un || un.trim()==='') {
+                dc.utils.error('用名不能为空');
+                return;
+            }
+            un=un.trim();
+
+            if(!pw || pw.trim()==='') {
+                dc.utils.error('密码不能为空');
+                return;
+            }
+            pw=pw.trim();
+
+            dc.doLogin(un,pw,function(err){
+                if(err) {
+                   dc.utils.error(err.msg);
+                } else {
+                    var search = location.search;
+                    var prePath = dc.cxt;
+                    if(search && search != '') {
+                        search = search.substr(1);
+                        var ks = search.split('=')
+                        if(ks) {
+                            for(var i=0; i< ks.length; i=i+2 ) {
+                                if(ks[i] == 'prePath') {
+                                    prePath = ks[i+1];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    dc.goTo(prePath);
+                }
+            });
+        })
+	   }
+	   
+	   $(document).ready(function(){ 
+		 init();
+		});
+	   
+	</script>
+  </head>
+  <body>
+  
+    <div id="bbsBody" class="bbsBody" style="">
+
+	    <%- include('../secs/header.html'); %>
+	    <% if(userInfo && !userInfo.success && userInfo.msg) {%>
+		   <span style="font-weight:bolder; font-size:20px; color:red;"><%=userInfo.msg %></span>
+		<% } %>	  		
+	  			 
+	</div>
+	
+	<div class="loginpanel">
+			
+			<div class="logintitle">登陆</div>
+							
+			<div id="bbsContentPanel">
+	
+			  <form action="<%=cxt%>/uc/doLogin", method="POST">
+	    			  <div class="input">
+	    			    <input type="text" class="form-control" placeholder="手机号" aria-describedby="basic-addon2" name="userName">
+	    			  </div>
+	    			  <div class="input">
+	    			    <input type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon2" name="pwd">
+	    			  </div>
+			  
+		
+					<input id="doLogin" type="button" value="提   交" style="width: 150px;height: 40px;border-radius: 5px;background: #00b7ee;color: #fff;margin-left: 125px;outline: none;margin-top: 30px;"/><br/>
+			  </form>
+			</div>
+			    		
+		</div>
+	
+
+  </body>
+</html>

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>relative position</title>
+	<style>
+       * {
+			margin:0px;
+			padding:0px;
+	   }
+	   #outbox {
+	     position:fixed;
+	     background-color:red;
+	     width:300px;
+		 height:300px;
+		 left:100px;
+		 top:30px;
+	   }
+	   
+	   #innerbox1 {
+	     background-color:blue;
+	     width:100px;
+		 height:100px;
+		 position:absolute;
+		 left:10px;
+		 top:10px;
+		 z-index:100;
+	   }
+	   
+	   #innerbox2 {
+	     background-color:yellow;
+	     width:100px;
+		 height:100px;
+		 position:absolute;
+		 left:110px;
+		 top:10px;
+		 z-index:99;
+	   }
+	</style>
+  </head>
+  
+  <body>
+    <div id="outbox">
+	   <div id="innerbox1">
+	     框内框1
+	   </div>
+	   <div id="innerbox2">
+	     框内框2
+	   </div>
+	</div>
+	
+	
+  </body>
+</html>
